@@ -1,0 +1,4 @@
+services:
+#    list_of_employees.example:
+#        class: ListOf\EmployeesBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

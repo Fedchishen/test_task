@@ -1,0 +1,8 @@
+list_of_employees:
+    resource: "@ListOfEmployeesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
