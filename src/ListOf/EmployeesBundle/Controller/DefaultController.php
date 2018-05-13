@@ -8,10 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/list")
      */
     public function indexAction()
     {
-        return $this->render('ListOfEmployeesBundle:Default:index.html.twig');
+        return $this->render('@ListOfEmployees/Default/index.html.twig');
     }
 }
