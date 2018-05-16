@@ -1,0 +1,29 @@
+{# Рекурсивно выводим всех работников в древовидной форме#}
+{% macro recursiveEmploye(id,employees) %}
+    {% for em in employees if em.chiefid == id and em.id != em.chiefid  %}
+        <li><div class="drop">+</div>
+            Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
+            Должность: {{ em.positionid }} / 
+            Дата ​приема ​на ​работу: {{ em.dateofemployment|date('Y-m-d')}} / 
+            З/П: {{ em.wages }}
+                <ul> 
+                {{ _self.recursiveEmploye(em.id,employees) }}
+                </ul>
+        </li>
+    {% endfor %}
+{% endmacro %}
+
+
+<ul class="treeline">
+{% for em in employees if em.positionid == 1 %}
+        <li>Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
+            Должность: {{ em.positionid }} / 
+            Дата ​приема ​на ​работу: {{ em.dateofemployment|date('Y-m-d')}} / 
+            З/П: {{ em.wages }}
+                <ul> 
+                {{ _self.recursiveEmploye(em.id,employees) }}
+                </ul>
+        </li>
+{% endfor %}
+</ul>
+
