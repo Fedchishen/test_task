@@ -12,7 +12,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        for($i=1;$i<500;$i++){
+        for($i=1;$i<=500;$i++){
         
             $employees = new Employees();
             

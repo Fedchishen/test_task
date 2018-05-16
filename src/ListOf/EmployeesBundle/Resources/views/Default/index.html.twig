@@ -15,7 +15,8 @@
         {% block body %}
             
         {# Рекурсивно выводим всех работников в древовидной форме#}
-        {% include "@ListOfEmployees/Default/recurse.html.twig" with {'employees': employees} only %}   
+        {% include "@ListOfEmployees/Default/recurse.html.twig" 
+           with {'employees': employees, 'position':position} only %}   
                 
            
             {#{% for employe in employees %}
