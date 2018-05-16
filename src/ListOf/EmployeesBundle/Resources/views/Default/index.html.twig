@@ -18,27 +18,6 @@
         {% include "@ListOfEmployees/Default/recurse.html.twig" 
            with {'employees': employees, 'position':position} only %}   
                 
-           
-            {#{% for employe in employees %}
-                {% if employe.id == 1 %}
-                    {{ employe.firstname }}
-                {% endif %}
-            {% endfor %}
-            <table>
-            {% for employe in employees %}
-            <tr>
-                    <td>{{ employe.id }} </td>
-                    <td>{{ employe.firstname }} </td>
-                    <td>{{ employe.middlename }} </td>
-                    <td>{{ employe.surname }} </td>
-                    <td>{{ employe.positionid }} </td>
-                    <td>{{ employe.dateofemployment|date('Y-m-d') }} </td>
-                    <td>{{ employe.wages }} руб </td>
-                    <td> {{ employe.chiefid }} </td>
-            </tr>
-            {% endfor %}
-            </table>#}
-
         {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
