@@ -4,31 +4,42 @@ namespace ListOf\EmployeesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use ListOf\EmployeesBundle\Entity;
 
-class DefaultController extends Controller
-{
+class DefaultController extends Controller {
+
     /**
      * @Route("/list")
      */
-    public function indexAction()
-    {
+    public function indexAction() {
+        return $this->render('@ListOfEmployees/Default/index.html.twig', array(
+                    'employees' => $this->getList('ListOfEmployeesBundle:Employees', null, null), //Работники
+                    'position' => $this->getPositions() //Должности
+        ));
+    }
 
-        $rep_employees = $this->getDoctrine()->getRepository('ListOfEmployeesBundle:Employees');	
-	$employees = $rep_employees->findAll();	
-        
-        $rep_positions = $this->getDoctrine()->getRepository('ListOfEmployeesBundle:Positions');	
-	$positions = $rep_positions->findAll();
-        
+    //ВАЖНО!!! функции getList() и getPositions() дублируются в SortListController.php
+    //Надо решить вопрос с выносом этих функций в отдельный класс
+    //
+    // получение информации из бд
+    public function getList($rep, $order_by, $index) {
+        if (empty($order_by)) {
+            $order_by = "id";
+        }
+        if (empty($index)) {
+            $index = "ASC";
+        }
+
+        return $this->getDoctrine()->getRepository($rep)
+                        ->findBy(array(), array($order_by => $index));
+    }
+
+    //получение массива с должностями, где $array[ранк_должности]=="Название должности"
+    public function getPositions() {
+        $positions = $this->getList('ListOfEmployeesBundle:Positions', null, null);
         $positions_new = array();
-        for ($i = 0; $i < count($positions); $i++)
-        {
+        for ($i = 0; $i < count($positions); $i++) {
             $positions_new[$positions[$i]->getPositionRank()] = $positions[$i]->getPositionName();
         }
-        
-        return $this->render('@ListOfEmployees/Default/index.html.twig', array(
-            'employees' => $employees,
-            'position' => $positions_new
-        ));
+        return $positions_new;
     }
 }
