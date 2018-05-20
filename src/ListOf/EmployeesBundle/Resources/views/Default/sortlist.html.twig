@@ -8,16 +8,109 @@
             <link rel="stylesheet" href="{{ asset('css/divtable.css') }}">
             <script src="{{ asset('js/jquery.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.js') }}"></script>
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}
+            <div class="divTable">
+                <div class="divTableBody">
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <input type="text" id="like">
+                            <select id="name">
+                                <option value="id">ID</option>
+                                <option value="surname">Фамилия</option>
+                                <option value="first_name">Имя</option>
+                                <option value="middle_name">Отчество</option>
+                                <option value="position_id">Должность</option>
+                                <option value="date_of_employment">Дата приёма на работу</option>
+                                <option value="wages">ЗП</option>
+                                <option value="chief_id">ID начальника</option>
+                            </select>
+                            <input type="button" id="search" value="AJAX Поиск">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divTable">
+                <div class="divTableBody" id="ResultList"></div>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
             <script language = "javascript">
-                //$(document).ready(function () {alert("qwerty");});
-                function SearchEmployees(name, like) {
+                var s_name, s_like;
+                var s_orderby = 'id';
+                var s_index = 'asc';
+
+                $(document).ready(SearchEmployees(null, null, null, null));
+
+                $(function () {
+                    $("#search").click(function () {
+                        SearchEmployees($("select#name").val(), $("#like").val(), null, null);
+                    });
+                });
+
+                function SearchEmployees(name, like, orderby, index) {
+                    if (name !== null && name !== undefined && s_name !== name) {
+                        s_name = name;
+                    }
+                    if (like !== null && like !== undefined && s_like !== like) {
+                        s_like = like;
+                    }
+                    if (orderby !== null && orderby !== undefined && s_orderby !== orderby) {
+                        s_orderby = orderby;
+                    }
+                    if (index !== null && index !== undefined && s_index !== index) {
+                        s_index = index;
+                    }
+
                     $.ajax({
                         type: "POST",
                         url: "{{absolute_url(path('search'))}}",
                         dataType: "json",
-                        data: {name: name, like: like},
+                        data: {name: s_name, like: s_like, orderby: s_orderby, index: s_index},
                         success: function (data, status) {
                             $('#ResultList').html('');
+
+                            var e = $('<div class="divTableRow">' +
+                                    '<div class="divTableCell">ID' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'id\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'id\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">Фамилия' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'surname\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'surname\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">Имя' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'first_name\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'first_name\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">Отчество' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'middle_name\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'middle_name\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">Должность' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'position_id\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'position_id\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">Дата приёма на работу' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'date_of_employment\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'date_of_employment\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">ЗП' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'wages\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'wages\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '<div class="divTableCell">ID начальника' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'chief_id\', \'asc\');">↓</a>' +
+                                    '<a href="#" onclick="SearchEmployees(null, null, \'chief_id\', \'desc\');">↑</a>' +
+                                    '</div>' +
+                                    '</div>');
+
+                            $('#ResultList').append(e);
+
                             for (i = 0; i < data.length; i++) {
                                 em = data[i];
 
@@ -47,140 +140,7 @@
                     });
                 }
 
-
-                {#               $(document).ready(function () {
-                                   $('#search').keyup(function() {
-                                       var like = $(this).val();
-                                       var name = $(this).attr("name");
-                                       $.ajax({
-                                           type: "POST",
-                                           url:"{{absolute_url(path('search'))}}" ,
-                                           dataType: "json",
-                                               data: {name:name,like: like},
-                                               success: function (data, status) {
-                                                   $('#ResultList').html('');
-                                                   for (i = 0; i < data.length; i++) {
-                                                       em = data[i];
-
-                                                       var e = $('<div class="divTableRow">' +
-                                                               '<div class="divTableCell" id = "id"></div>' +
-                                                               '<div class="divTableCell" id = "surname"></div>' +
-                                                               '<div class="divTableCell" id = "firstname"></div>' +
-                                                               '<div class="divTableCell" id = "middlename"></div>' +
-                                                               '<div class="divTableCell" id = "positionid"></div>' +
-                                                               '<div class="divTableCell" id = "dateofemployment"></div>' +
-                                                               '<div class="divTableCell" id = "wages"></div>' +
-                                                               '<div class="divTableCell" id = "chiefid"></div>' +
-                                                               '</div>');
-
-                                                       $('#id', e).html(em['id']);
-                                                       $('#surname', e).html(em['surname']);
-                                                       $('#firstname', e).html(em['firstname']);
-                                                       $('#middlename', e).html(em['middlename']);
-                                                       $('#positionid', e).html(em['positionid']);
-                                                       $('#dateofemployment', e).html(em['dateofemployment']);
-                                                       $('#wages', e).html(em['wages']);
-                                                       $('#chiefid', e).html(em['chiefid']);
-
-                                                       $('#ResultList').append(e);
-                                                   }
-                                               }
-                                           });
-                                       });
-                                   });#}
             </script> 
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}
-
-            <div class="divTable">
-                <div class="divTableBody">
-                    <div class="divTableRow">
-                        <div class="divTableCell">
-                            {#<input type="text" id="search1" class="form-control">#}
-                            <input type="text" id="search" name="id" class="form-control" onkeyup="SearchEmployees('id', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="surname" class="form-control" onkeyup="SearchEmployees('surname', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="first_name" class="form-control" onkeyup="SearchEmployees('first_name', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="middle_name" class="form-control" onkeyup="SearchEmployees('middle_name', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="position_id" class="form-control" onkeyup="SearchEmployees('position_id', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="date_of_employment" class="form-control" onkeyup="SearchEmployees('date_of_employment', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="wages" class="form-control" onkeyup="SearchEmployees('wages', this.value)">
-                        </div>
-                        <div class="divTableCell">
-                            <input type="text" id="search" name="chief_id" class="form-control" onkeyup="SearchEmployees('chief_id', this.value)">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="divTable">
-                <div class="divTableBody" id="ResultList">
-                    <div class="divTableRow">
-                        <div class="divTableCell">ID 
-                            <a href={{ path('sort',{'order_by': 'id','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'id','index':'desc'}) }}>↑</a>
-                        </div>
-                        <div class="divTableCell">Фамилия
-                            <a href={{ path('sort',{'order_by': 'surname','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'surname','index':'desc'}) }}>↑</a>
-                        </div>
-                        <div class="divTableCell">Имя
-                            <a href={{ path('sort',{'order_by': 'first_name','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'first_name','index':'desc'}) }}>↑</a>
-                        </div>
-                        <div class="divTableCell">Отчество
-                            <a href={{ path('sort',{'order_by': 'middle_name','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'middle_name','index':'desc'}) }}>↑</a>                            
-                        </div>
-                        <div class="divTableCell">Должность
-                            <a href={{ path('sort',{'order_by': 'position_id','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'position_id','index':'desc'}) }}>↑</a>                           
-                        </div>
-                        <div class="divTableCell">Дата приёма на работу
-                            <a href={{ path('sort',{'order_by': 'date_of_employment','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'date_of_employment','index':'desc'}) }}>↑</a>                            
-                        </div>
-                        <div class="divTableCell">ЗП
-                            <a href={{ path('sort',{'order_by': 'wages','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'wages','index':'desc'}) }}>↑</a>                              
-                        </div>
-                        <div class="divTableCell">ID начальника
-                            <a href={{ path('sort',{'order_by': 'chief_id','index':'asc'}) }}>↓</a>
-                            <a href={{ path('sort',{'order_by': 'chief_id','index':'desc'}) }}>↑</a>                              
-                        </div>
-                    </div>
-
-                    {% for em in employees %}
-                        <div class="divTableRow">
-                            <div class="divTableCell">{{ em.id }}</div>
-                            <div class="divTableCell">{{ em.surname }}</div>
-                            <div class="divTableCell">{{ em.firstname }}</div>
-                            <div class="divTableCell">{{ em.middlename }}</div>
-                            <div class="divTableCell">{{ position[em.positionid] }}</div>
-                            <div class="divTableCell">{{ em.dateofemployment|date('Y-m-d')}}</div>
-                            <div class="divTableCell">{{ em.wages }}</div>
-                            <div class="divTableCell">{{ em.chiefid }}</div>
-                        </div>
-                    {% endfor %}
-
-                </div>
-            </div>
-        {% endblock %}
-        {% block javascripts %}
-
         {% endblock %}
     </body>
 </html>
