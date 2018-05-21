@@ -6,3 +6,6 @@ list_of_employees:
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+logout:
+    path: /logout
