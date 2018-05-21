@@ -29,6 +29,9 @@
                                 <option value="chief_id">ID начальника</option>
                             </select>
                             <input type="button" id="search" value="AJAX Поиск">
+                            
+                            <a href="{{absolute_url(path('employees_new'))}}">Создать карточку работника</a>
+                            
                         </div>
                     </div>
                 </div>
@@ -107,6 +110,8 @@
                                     '<a href="#" onclick="SearchEmployees(null, null, \'chief_id\', \'asc\');">↓</a>' +
                                     '<a href="#" onclick="SearchEmployees(null, null, \'chief_id\', \'desc\');">↑</a>' +
                                     '</div>' +
+                                    '<div class="divTableCell">' +
+                                    '</div>' +
                                     '</div>');
 
                             $('#ResultList').append(e);
@@ -123,6 +128,7 @@
                                         '<div class="divTableCell" id = "dateofemployment"></div>' +
                                         '<div class="divTableCell" id = "wages"></div>' +
                                         '<div class="divTableCell" id = "chiefid"></div>' +
+                                        '<div class="divTableCell" id = "edit"></div>' +
                                         '</div>');
 
                                 $('#id', e).html(em['id']);
@@ -133,7 +139,8 @@
                                 $('#dateofemployment', e).html(em['dateofemployment']);
                                 $('#wages', e).html(em['wages']);
                                 $('#chiefid', e).html(em['chiefid']);
-
+                                $('#edit', e).html('<a href="'+'{{absolute_url(path('search'))}}/'+em['id']+'">Карточка</a><br>'+
+                                        '<a href="'+'{{absolute_url(path('search'))}}/'+em['id']+'/edit">Редактировать</a>');
                                 $('#ResultList').append(e);
                             }
                         }

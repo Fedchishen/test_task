@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Employee</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ employee.id }}</td>
+            </tr>
+            <tr>
+                <th>First_name</th>
+                <td>{{ employee.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Middle_name</th>
+                <td>{{ employee.middlename }}</td>
+            </tr>
+            <tr>
+                <th>Surname</th>
+                <td>{{ employee.surname }}</td>
+            </tr>
+            <tr>
+                <th>Position_id</th>
+                <td>{{ employee.positionid }}</td>
+            </tr>
+            <tr>
+                <th>Date_of_employment</th>
+                <td>{% if employee.dateofemployment %}{{ employee.dateofemployment|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Wages</th>
+                <td>{{ employee.wages }}</td>
+            </tr>
+            <tr>
+                <th>Chief_id</th>
+                <td>{{ employee.chiefid }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('search') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('employees_edit', { 'id': employee.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
