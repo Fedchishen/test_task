@@ -82,6 +82,8 @@
                                     '<a href="#" onclick="SearchEmployees(null, null, \'id\', \'asc\');">↓</a>' +
                                     '<a href="#" onclick="SearchEmployees(null, null, \'id\', \'desc\');">↑</a>' +
                                     '</div>' +
+                                    '<div class="divTableCell">Фото' +
+                                    '</div>' +
                                     '<div class="divTableCell">Фамилия' +
                                     '<a href="#" onclick="SearchEmployees(null, null, \'surname\', \'asc\');">↓</a>' +
                                     '<a href="#" onclick="SearchEmployees(null, null, \'surname\', \'desc\');">↑</a>' +
@@ -121,6 +123,7 @@
 
                                 var e = $('<div class="divTableRow">' +
                                         '<div class="divTableCell" id = "id"></div>' +
+                                        '<div class="divTableCell" id = "photo"></div>' +
                                         '<div class="divTableCell" id = "surname"></div>' +
                                         '<div class="divTableCell" id = "firstname"></div>' +
                                         '<div class="divTableCell" id = "middlename"></div>' +
@@ -132,6 +135,7 @@
                                         '</div>');
 
                                 $('#id', e).html(em['id']);
+                                $('#photo', e).html('<img src="{{ asset('uploads/photo/min/')}}'+em['photo']+'">');
                                 $('#surname', e).html(em['surname']);
                                 $('#firstname', e).html(em['firstname']);
                                 $('#middlename', e).html(em['middlename']);

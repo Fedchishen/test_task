@@ -55,7 +55,8 @@ class SortListController extends Controller {
                     'positionid' => $positions[$em->getPositionId()],
                     'dateofemployment' => $em->getDateOfEmployment()->format('Y-m-d'),
                     'wages' => $em->getWages(),
-                    'chiefid' => $em->getChiefId()
+                    'chiefid' => $em->getChiefId(),
+                    'photo' => $em->getPhoto()
                 );
                 $jsonData[$idx++] = $temp;
             }

@@ -3,6 +3,7 @@
 namespace ListOf\EmployeesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -52,7 +53,25 @@ class Employees
      */
     protected $chief_id;
     
-    
+     /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Пожалуйста загрузите файл в формате png/jpeg/jpg/gif")
+     * @Assert\File(maxSize="3M", mimeTypes={"image/png", "image/jpeg", "image/jpg", "image/gif"})
+     */
+    private $photo;
+
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
     
 
     /**

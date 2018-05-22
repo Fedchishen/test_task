@@ -37,4 +37,3 @@ services:
         resource: '../../src/ListOf/EmployeesBundle/DataFixtures'
         tags: ['doctrine.fixture.orm']
         
-   
