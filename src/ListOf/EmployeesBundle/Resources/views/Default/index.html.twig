@@ -13,13 +13,49 @@
     </head>
     <body>
         {% block body %}
-            
-        {# Рекурсивно выводим всех работников в древовидной форме#}
-        {% include "@ListOfEmployees/Default/recurse.html.twig" 
+
+            {# Рекурсивно выводим всех работников в древовидной форме#}
+            {% include "@ListOfEmployees/Default/recurse.html.twig" 
            with {'employees': employees, 'position':position} only %}   
-                
+
         {% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+       <script language = "javascript">
+
+
+                function NextLevel(id) {
+                    alert(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "{{absolute_url(path('search'))}}",
+                        dataType: "json",
+                        data: {name:'chief_id', like:id},
+                        success: function (data, status) {
+                            $('#'+id).html('');
+                            for (i = 0; i < data.length; i++) {
+                                em = data[i];
+
+                                var e = $('<li>' +
+                                        '<div onclick="NextLevel('+em['id']+');">'+
+                                        'Ф.И.О.: '+em['surname']+
+                                        '&nbsp;'+em['firstname']+
+                                        '&nbsp;'+em['firstname']+' /'+ 
+                                        'Должность: '+em['positionid']+' /'+ 
+                                        'Дата ​приема ​на ​работу: '+em['dateofemployment']+' /'+ 
+                                        'З/П: '+em['wages']+
+                                        '</div>'+
+                                        '<ul id="'+em['id']+'"></ul>'+
+                                        '</li>');
+
+                                $('#'+id).append(e);
+                            }
+                        }
+                    });
+                }
+
+            </script> 
+            </script>
+        {% endblock %}
     </body>
 </html>
 

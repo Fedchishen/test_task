@@ -4,6 +4,8 @@ namespace ListOf\EmployeesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use ListOf\EmployeesBundle\Controller\SortListController;
 
 class DefaultController extends Controller {
 
@@ -16,6 +18,14 @@ class DefaultController extends Controller {
                     'position' => $this->getPositions() //Должности
         ));
     }
+    
+//     /**
+//     * @Route("/byid" name="byid")
+//     */
+//    public function byIdAction(Request $request){
+//        $search = new SortListController();
+//        return $search->searchSortAction($request);
+//    }
 
     //получение массива с должностями, где $array[ранк_должности]=="Название должности"
     public function getPositions() {

@@ -1,5 +1,6 @@
-{# Рекурсивно выводим всех работников в древовидной форме#}
-{% macro recursiveEmploye(id,employees,position) %}
+{# Рекурсивно выводим всех работников в древовидной форме.
+UPD: в 12м задании необходимость погружения через рекурсию отпала#}
+{#{% macro recursiveEmploye(id,employees,position) %}
     {% for em in employees if em.chiefid == id and em.id != em.chiefid  %}
         <li>Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
             Должность: {{ position[em.positionid] }} / 
@@ -8,6 +9,19 @@
                 <ul> 
                 {{ _self.recursiveEmploye(em.id,employees,position) }}
                 </ul>
+        </li>
+    {% endfor %}
+{% endmacro %}#}
+
+{% macro recursiveEmploye(id,employees,position) %}
+    {% for em in employees if em.chiefid == id and em.id != em.chiefid %}
+        <li><div onclick="NextLevel({{em.id}});">Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
+            Должность: {{ position[em.positionid] }} / 
+            Дата ​приема ​на ​работу: {{ em.dateofemployment|date('Y-m-d')}} / 
+            З/П: {{ em.wages }}
+            </div>
+            <ul id="{{em.id}}">
+            </ul>
         </li>
     {% endfor %}
 {% endmacro %}

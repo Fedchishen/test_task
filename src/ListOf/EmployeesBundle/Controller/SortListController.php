@@ -62,7 +62,7 @@ class SortListController extends Controller {
             }
             return new JsonResponse($jsonData);
         } else {
-            return $this->render('@ListOfEmployees/Default/sortlist.html.twig');
+            return $this->render('@ListOfEmployees/SortList/sortlist.html.twig');
         }
     }
 
