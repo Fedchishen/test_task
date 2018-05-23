@@ -15,28 +15,26 @@ UPD: в 12м задании необходимость погружения че
 
 {% macro recursiveEmploye(id,employees,position) %}
     {% for em in employees if em.chiefid == id and em.id != em.chiefid %}
-        <li><div onclick="NextLevel({{em.id}});">Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
+        <li cid="{{em.id}}"><div id="{{em.id}}" onclick="NextLevel({{em.id}});">Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
             Должность: {{ position[em.positionid] }} / 
             Дата ​приема ​на ​работу: {{ em.dateofemployment|date('Y-m-d')}} / 
             З/П: {{ em.wages }}
             </div>
-            <ul id="{{em.id}}">
-            </ul>
         </li>
     {% endfor %}
 {% endmacro %}
 
 
-<ul class="treeline">
+<ol class="sortable">
 {% for em in employees if em.positionid == 1 %}
-        <li>Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
+        <li cid="{{em.id}}"><div id="{{em.id}}">Ф.И.О.: {{ em.surname }}&nbsp;{{ em.firstname }}&nbsp;{{ em.middlename }} / 
             Должность: {{ position[em.positionid] }} / 
             Дата ​приема ​на ​работу: {{ em.dateofemployment|date('Y-m-d')}} / 
-            З/П: {{ em.wages }}
-                <ul> 
+            З/П: {{ em.wages }}</div>
+                <ol> 
                 {{ _self.recursiveEmploye(em.id,employees,position) }}
-                </ul>
+                </ol>
         </li>
 {% endfor %}
-</ul>
-
+</ol>
+</div>
