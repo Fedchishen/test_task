@@ -81,9 +81,13 @@
                                         '</li>';
                             }
                             
+                            $div = $('#'+id).clone();
+                            $( "li[cid='"+id+"']" ).html('');
+                            $($div).appendTo("li[cid='"+id+"']");
+                            
                             if(e!==''){
                                 $('#'+id).after('<ol>'+e+'</ol>');
-                            }
+                            }                 
                         }
                     });
                 }
