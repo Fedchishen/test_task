@@ -7,12 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-
-
-
-
-
-
 class DefaultController extends Controller {
 
     /**
@@ -24,40 +18,32 @@ class DefaultController extends Controller {
                     'position' => $this->getPositions() //Должности
         ));
     }
-    
-     /**
+
+    /**
      * @Route("/newchief", name="newchief")
      */
     public function newchiefAction(Request $request) {
         if ($request->isXmlHttpRequest()) {
             $id = $request->request->get('id');
             $chief_id = $request->request->get('chief_id');
-            
-                $entityManager = $this->getDoctrine()->getManager();
-                $em = $entityManager->getRepository('ListOfEmployeesBundle:Employees')->find($id);
 
-                if (!$em) {
-                    throw $this->createNotFoundException(
-                        'No employees found for id '.$id
-                    );
-                }
+            $entityManager = $this->getDoctrine()->getManager();
+            $em = $entityManager->getRepository('ListOfEmployeesBundle:Employees')->find($id);
 
-                $em->setChiefId($chief_id);
-                $entityManager->flush();
-            
+            if (!$em) {
+                throw $this->createNotFoundException(
+                        'No employees found for id ' . $id
+                );
+            }
+
+            $em->setChiefId($chief_id);
+            $entityManager->flush();
+
             return new Response('YES', Response::HTTP_OK);
+        } else {
+            return new Response('NO', Response::HTTP_OK);
         }
-        else{return new Response('NO', Response::HTTP_OK);}
-
     }
-//    
-//     /**
-//     * @Route("/byid" name="byid")
-//     */
-//    public function byIdAction(Request $request){
-//        $search = new SortListController();
-//        return $search->searchSortAction($request);
-//    }
 
     //получение массива с должностями, где $array[ранк_должности]=="Название должности"
     public function getPositions() {

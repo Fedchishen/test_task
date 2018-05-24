@@ -24,21 +24,21 @@ class SortListController extends Controller {
             $order_by = $request->request->get('orderby');
             $index = $request->request->get('index');
 
-            
+
             // Проверяю на null
             if (is_null($name) || is_null($like)) {
                 $name_like = array();
             } else {
                 $name_like = array($name => $like);
             }
-            
+
             // Проверяю на null
             if (is_null($order_by) || is_null($index)) {
                 $order_by_index = array();
             } else {
                 $order_by_index = array($order_by => $index);
             }
-            
+
             //Получаю работников
             $employees = $this->getDoctrine()->getRepository('ListOfEmployeesBundle:Employees')
                     ->findBy($name_like, $order_by_index);
