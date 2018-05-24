@@ -67,10 +67,8 @@ class EmployeesController extends Controller {
         $imagick = new \Imagick(realpath($imagePath));
         $imagick->scaleImage(150, 150, true);
         $imagick->writeimage($this->getParameter('photo_directory').'min/'.$filename);
-
-//        header("Content-Type: image/jpg");
-//        echo $imagick->getImageBlob();
     }
+    
     /**
      * @return string
      */
@@ -143,9 +141,23 @@ class EmployeesController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($employee);
-            $em->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            
+            $chief_id=$employee->getChiefId();
+            $id=$employee->getId();
+            
+            $ems = $entityManager->getRepository('ListOfEmployeesBundle:Employees')
+                    ->findBy(['chief_id'=>$id], []);
+
+            for ($i = 0; $i < count($ems); $i++) {
+                echo $ems[$i]->getChiefId();
+                $ems[$i]->setChiefId($chief_id);
+                echo $ems[$i]->getChiefId();
+            }
+            $entityManager->flush();
+            
+            $entityManager->remove($employee);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('search');
